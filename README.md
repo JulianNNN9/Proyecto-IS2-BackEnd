@@ -66,7 +66,7 @@ INSERT INTO Servicio (Nombre_Servicio, Precio) VALUES
 ('Lavado y secado', 30000.00),
 ('Manicure', 25000.00);
 
-```sql
+```
 
 # Instrucciones de Migración de Base de Datos
 
