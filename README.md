@@ -74,8 +74,6 @@ INSERT INTO Servicio (Nombre_Servicio, Precio) VALUES
 
 A continuación se detallan las instrucciones para modificar la estructura de las tablas `Cita`, `Cita_Servicio`, y `Servicio` en la base de datos.
 
-## 1. Eliminar Claves Foráneas Existentes
-
 ```sql
 ALTER TABLE Cita_Servicio DROP FOREIGN KEY cita_servicio_ibfk_1;
 ALTER TABLE Cita_Servicio DROP FOREIGN KEY cita_servicio_ibfk_2;
