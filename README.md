@@ -22,18 +22,18 @@ CREATE DATABASE peluqueria_db;
 USE peluqueria_db;
 
 CREATE TABLE Estilista (
-    ID_Estilista INT AUTO_INCREMENT PRIMARY KEY,
+    ID_Estilista BIGINT AUTO_INCREMENT PRIMARY KEY,
     Nombre_Estilista VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Servicio (
-    ID_Servicio INT AUTO_INCREMENT PRIMARY KEY,
+    ID_Servicio BIGINT AUTO_INCREMENT PRIMARY KEY,
     Nombre_Servicio VARCHAR(100) NOT NULL,
     Precio DECIMAL(10, 2) NOT NULL -- Precio del servicio
 );
 
 CREATE TABLE Cita (
-    ID_Cita INT AUTO_INCREMENT PRIMARY KEY,
+    ID_Cita BIGINT AUTO_INCREMENT PRIMARY KEY,
     Nombre_Completo VARCHAR(150) NOT NULL,
     Numero_Telefono VARCHAR(15) NOT NULL,
     Correo_Electronico VARCHAR(100), -- Opcional
@@ -45,8 +45,8 @@ CREATE TABLE Cita (
 );
 
 CREATE TABLE Cita_Servicio (
-    ID_Cita INT,
-    ID_Servicio INT,
+    ID_Cita BIGINT,
+    ID_Servicio BIGINT,
     PRIMARY KEY (ID_Cita, ID_Servicio),
     FOREIGN KEY (ID_Cita) REFERENCES Cita(ID_Cita),
     FOREIGN KEY (ID_Servicio) REFERENCES Servicio(ID_Servicio)
