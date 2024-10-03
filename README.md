@@ -39,7 +39,7 @@ CREATE TABLE Cita (
     Correo_Electronico VARCHAR(100), -- Opcional
     Fecha_Cita DATE NOT NULL,
     Hora_Cita TIME NOT NULL,
-    Preferencia_Estilista INT, -- Relación opcional con Estilista
+    Preferencia_Estilista BIGINT, -- Relación opcional con Estilista
     Notas_Adicionales TEXT,
     FOREIGN KEY (Preferencia_Estilista) REFERENCES Estilista(ID_Estilista)
 );
