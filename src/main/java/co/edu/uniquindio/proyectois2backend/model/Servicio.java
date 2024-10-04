@@ -1,15 +1,21 @@
 package co.edu.uniquindio.proyectois2backend.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.*;
+import lombok.*;
 
+@Entity
+@Table(name = "Servicio")
 @Data
 @Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Servicio {
 
+    @Id
     @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
     private String nombre;
