@@ -29,7 +29,9 @@ public class Cita {
             inverseJoinColumns = @JoinColumn(name = "servicio_id")
     )
     private List<Servicio> idServicios;
-    private Double totalPago;
+    @OneToOne
+    @JoinColumn(name = "detalle_pago")
+    private Pago pago;
     private Boolean confirmacion;
     private EstadoCita estadoCita;
     private Double propina;

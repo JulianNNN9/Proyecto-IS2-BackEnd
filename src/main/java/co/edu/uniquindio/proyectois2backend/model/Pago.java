@@ -21,8 +21,7 @@ public class Pago {
     private String id;
 
     private Double total;
-    @ElementCollection
-    private List<String> detallePago;
+    private String detallePago;
     private EstadoPago estadoPago;
     // TODO ¿Implementar pasarela?
 }

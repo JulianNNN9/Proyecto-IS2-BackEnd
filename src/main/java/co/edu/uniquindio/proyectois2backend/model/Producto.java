@@ -21,5 +21,5 @@ public class Producto {
     private String nombre;
     private Double precio;
     private Integer stock;
-    private String proveedor;
+    private String marca;
 }
