@@ -57,6 +57,7 @@ CREATE TABLE Pago (
     estado_pago VARCHAR(50),
     cita_id BIGINT,
     FOREIGN KEY (cita_id) REFERENCES Cita(id) ON DELETE CASCADE
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(id) ON DELETE CASCADE
 );
 
 CREATE TABLE detalle_cita_servicios (

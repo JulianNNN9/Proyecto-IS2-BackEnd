@@ -27,4 +27,7 @@ public class Pago {
     @OneToOne
     @JoinColumn(name = "cita_id")
     private Cita cita;
+    @OneToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
 }
