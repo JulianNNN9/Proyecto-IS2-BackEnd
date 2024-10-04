@@ -28,6 +28,19 @@ CREATE TABLE Servicio (
     recomendaciones TEXT
 );
 
+CREATE TABLE Cita (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    fecha DATETIME NOT NULL,
+    confirmacion BOOLEAN,
+    estado_cita VARCHAR(50),
+    propina DECIMAL(10, 2),
+    comentario TEXT,
+    cliente_id BIGINT,
+    estilista_id BIGINT,
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(id),
+    FOREIGN KEY (estilista_id) REFERENCES Estilista(id)
+);
+
 CREATE TABLE Producto (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
@@ -44,19 +57,6 @@ CREATE TABLE Pago (
     estado_pago VARCHAR(50),
     cita_id BIGINT,
     FOREIGN KEY (cita_id) REFERENCES Cita(id) ON DELETE CASCADE
-);
-
-CREATE TABLE Cita (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    fecha DATETIME NOT NULL,
-    confirmacion BOOLEAN,
-    estado_cita VARCHAR(50),
-    propina DECIMAL(10, 2),
-    comentario TEXT,
-    cliente_id BIGINT,
-    estilista_id BIGINT,
-    FOREIGN KEY (cliente_id) REFERENCES Cliente(id),
-    FOREIGN KEY (estilista_id) REFERENCES Estilista(id)
 );
 
 CREATE TABLE detalle_cita_servicios (
