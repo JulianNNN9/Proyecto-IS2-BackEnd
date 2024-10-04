@@ -24,19 +24,21 @@ public class Cita {
     private LocalDateTime fecha;
     @ManyToMany
     @JoinTable(
-            name = "cita_servicios",
+            name = "detalle_cita_servicios",
             joinColumns = @JoinColumn(name = "cita_id"),
             inverseJoinColumns = @JoinColumn(name = "servicio_id")
     )
-    private List<Servicio> idServicios;
+    private List<Servicio> servicios;
     private Boolean confirmacion;
     private EstadoCita estadoCita;
     private Double propina;
     private String comentario;
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    private Cliente idCliente;
+    private Cliente cliente;
     @ManyToOne
     @JoinColumn(name = "estilista_id")
-    private Estilista idEstilista;
+    private Estilista estilista;
+    @OneToMany(mappedBy = "cita")
+    private List<Producto> productos;
 }

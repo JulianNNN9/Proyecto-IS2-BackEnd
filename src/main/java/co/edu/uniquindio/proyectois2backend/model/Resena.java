@@ -2,7 +2,6 @@ package co.edu.uniquindio.proyectois2backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.simplejavamail.api.internal.clisupport.model.Cli;
 
 @Entity
 @Table(name = "Resena")
@@ -23,9 +22,9 @@ public class Resena {
     private String comentario;
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    private Cliente idCliente;
+    private Cliente cliente;
     @ManyToOne
-    @JoinColumn(name = "estilista_id")
-    private Cita idCita;
+    @JoinColumn(name = "cita_id")
+    private Cita cita;
 }
 

@@ -26,5 +26,5 @@ public class Pago {
     private EstadoPago estadoPago;
     @OneToOne
     @JoinColumn(name = "cita_id")
-    private Cita idCita;
+    private Cita cita;
 }

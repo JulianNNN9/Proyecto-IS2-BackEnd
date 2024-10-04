@@ -24,7 +24,7 @@ public class Cliente {
     private String correo;
     private String contrasena;
     private String telefono;
-    @ElementCollection
-    private List<String> preferecias;
-
+    private String preferecias;
+    @OneToMany(mappedBy = "cliente")
+    private List<Cita> citas;
 }

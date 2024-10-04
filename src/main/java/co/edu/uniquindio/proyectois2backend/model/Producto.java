@@ -22,4 +22,7 @@ public class Producto {
     private Double precio;
     private Integer stock;
     private String marca;
+    @ManyToOne
+    @JoinColumn(name = "cita_id")
+    private Cita cita;
 }

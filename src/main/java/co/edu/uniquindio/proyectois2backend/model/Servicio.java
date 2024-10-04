@@ -3,6 +3,8 @@ package co.edu.uniquindio.proyectois2backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Servicio")
 @Data
@@ -21,5 +23,7 @@ public class Servicio {
     private String nombre;
     private Double precio;
     private String duracion;
-    // TODO implementar las recomendaciones de productos o servicios adicionales recomendados por el estilista
+    private String recomendaciones;
+    @ManyToMany(mappedBy = "servicios")
+    private List<Cita> citas;
 }

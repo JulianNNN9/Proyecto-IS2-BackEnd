@@ -3,6 +3,8 @@ package co.edu.uniquindio.proyectois2backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Estilista")
 @Data
@@ -23,4 +25,6 @@ public class Estilista {
     // TODO implementar agenda
     // TODO implementar relación con preferencias de clientes recurrentes
     // TODO implementar fotos de trabajos anteriores
+    @OneToMany(mappedBy = "estilista")
+    private List<Cita> citas;
 }
