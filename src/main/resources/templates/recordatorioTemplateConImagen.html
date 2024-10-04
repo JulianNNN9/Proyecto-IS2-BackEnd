@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        .email-container {
+            background-color: #f0f8ff; /* Fondo azul claro */
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+        }
+        .email-content {
+            background-color: #ffffff; /* Fondo blanco */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .email-header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ff6f61; /* Color del encabezado */
+        }
+        .email-body {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .highlight {
+            color: #ff6f61; /* Color de resaltado */
+            font-weight: bold;
+        }
+        .email-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777777;
+            font-size: 12px;
+        }
+        .cta-button {
+            background-color: #ff6f61; /* Color del botón */
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .logo {
+            max-width: 200px;
+            margin: 0 auto 20px;
+            display: block;
+        }
+        .welcome-image {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="email-content">
+        <img th:src="@{/images/logo.png}" alt="Logo de tu peluquería" class="logo">
+        <img th:src="@{/images/bienvenida.jpg}" alt="Imagen de bienvenida" class="welcome-image">
+        <div class="email-header">
+            <h2>Recordatorio de tu cita en Peluquería</h2>
+        </div>
+        <div class="email-body">
+            <p>Hola <span class="highlight" th:text="${nombreCliente}">[Nombre del cliente]</span>,</p>
+            <p>Te recordamos que tienes una cita programada para el servicio de <span class="highlight" th:text="${servicio}">[Servicio]</span> el:</p>
+            <p><strong th:text="${fechaCita}">[Fecha y hora de la cita]</strong></p>
+            <p>Estilista asignado: <span th:text="${nombreEstilista}">[Nombre del estilista]</span></p>
+            <p>Si tienes alguna pregunta, no dudes en contactarnos al <span th:text="${telefonoPeluqueria}">[Teléfono]</span>.</p>
+            <a href="https://tu-sitio-web" class="cta-button">Confirmar asistencia</a>
+        </div>
+        <div class="email-footer">
+            <p>¡Esperamos verte pronto!</p>
+            <p>Este es un mensaje automático, por favor no respondas a este correo.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

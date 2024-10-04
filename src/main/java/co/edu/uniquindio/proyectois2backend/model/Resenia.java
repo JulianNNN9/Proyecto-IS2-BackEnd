@@ -6,17 +6,18 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "produdcto")
+@Table(name = "resenia")
 @Data
 @Builder
-public class Producto {
+public class Resenia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre;
-    private Double precio;
-    private Integer stock;
-    private String proveedor;
+    private Integer calificacion;
+    private String comentario;
+    private String idCliente;
+    private String idCita;
 }
+

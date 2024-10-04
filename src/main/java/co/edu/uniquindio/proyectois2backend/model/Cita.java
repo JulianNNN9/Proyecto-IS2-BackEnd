@@ -1,27 +1,34 @@
 package co.edu.uniquindio.proyectois2backend.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "cita")
 @Data
 @Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Cita {
 
-    @EqualsAndHashCode.Include
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private LocalDateTime fecha;
-    private List<String> idServicios;
     private Double totalPago;
     private Boolean confirmacion;
+
+    @ManyToOne
+    @JoinColumn(name = "id_estado_cita", nullable = false)
     private EstadoCita estadoCita;
-    //Implementar funcionalidad recordatorio
+
     private Double propina;
     private String comentario;
     private String idCliente;
     private String idEstilista;
+    private Boolean recordatorioEnviado;
 }

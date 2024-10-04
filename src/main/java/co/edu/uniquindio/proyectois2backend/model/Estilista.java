@@ -1,16 +1,19 @@
 package co.edu.uniquindio.proyectois2backend.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.*;
+import lombok.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "estilista")
 @Data
 @Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Estilista {
 
-    @EqualsAndHashCode.Include
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String nombre;
     private String especialidad;

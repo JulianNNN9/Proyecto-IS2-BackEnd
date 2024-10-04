@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        .email-container {
+            background-color: #f9f9f9; /* Fondo más claro */
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+        }
+        .email-content {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .email-header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ff7043; /* Color del encabezado */
+        }
+        .email-body {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .highlight {
+            color: #ff7043; /* Color de resaltado */
+            font-weight: bold;
+        }
+        .email-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777777;
+            font-size: 12px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #ff7043;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="email-content">
+        <div class="email-header">
+            <h2>Confirmación de tu cita</h2>
+        </div>
+        <div class="email-body">
+            <p>Hola <span class="highlight" th:text="${nombreCliente}">[Nombre del cliente]</span>,</p>
+            <p>Tu cita para <span class="highlight" th:text="${servicio}">[Servicio]</span> ha sido confirmada.</p>
+            <p><strong th:text="${fechaCita}">[Fecha y hora de la cita]</strong></p>
+            <p>Estilista: <span th:text="${nombreEstilista}">[Nombre del estilista]</span></p>
+            <p>Dirección: <span th:text="${direccionPeluqueria}">[Dirección de la peluquería]</span></p>
+            <p>Si necesitas reprogramar, contáctanos al <span th:text="${telefonoPeluqueria}">[Teléfono]</span>.</p>
+            <a href="#" class="button">Ver detalles</a>
+        </div>
+        <div class="email-footer">
+            <p>¡Gracias por elegirnos!</p>
+            <p>Este es un mensaje automático, por favor no respondas a este correo.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
