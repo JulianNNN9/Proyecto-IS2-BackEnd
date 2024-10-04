@@ -21,7 +21,10 @@ public class Pago {
     private String id;
 
     private Double total;
-    private String detallePago;
+    @ElementCollection
+    private List<String> detallePago;
     private EstadoPago estadoPago;
-    // TODO ¿Implementar pasarela?
+    @OneToOne
+    @JoinColumn(name = "cita_id")
+    private Cita idCita;
 }
