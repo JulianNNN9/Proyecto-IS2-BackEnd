@@ -3,17 +3,20 @@ package co.edu.uniquindio.proyectois2backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "estilista")
+@Table(name = "Estilista")
 @Data
 @Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Estilista {
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String nombre;
     private String especialidad;

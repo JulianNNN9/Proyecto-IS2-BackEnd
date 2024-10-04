@@ -5,19 +5,23 @@ import lombok.*;
 
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "pago")
+@Table(name = "Pago")
 @Data
 @Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Pago {
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private Double total;
+    @ElementCollection
     private List<String> detallePago;
     private EstadoPago estadoPago;
     // TODO ¿Implementar pasarela?
