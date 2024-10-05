@@ -28,7 +28,7 @@ public class CitaServiceImple implements CitaService {
 
         for (Cita cita : citasDeHoy) {
             try {
-                String correoCliente = clienteRepository.obtenerCorreoClientePorId(cita.getIdCliente());
+                String correoCliente = clienteRepository.obtenerCorreoClientePorId(String.valueOf(cita.getCliente()));
                 RecordatorioDTO citaRecordatorioDTO = new RecordatorioDTO(
                         cita.getId(),
                         cita.getFecha(),
