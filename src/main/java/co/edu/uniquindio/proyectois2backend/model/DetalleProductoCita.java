@@ -33,4 +33,15 @@ public class DetalleProductoCita {
     @NotNull
     @Column(nullable = false)
     private Double precio; // Precio unitario del producto en el momento de la compra
+
+    @Override
+    public String toString() {
+        return "DetalleProductoCita{" +
+                "id=" + id +
+                ", cita=" + (cita != null ? cita.getId() : "N/A") +
+                ", producto=" + (producto != null ? producto.getNombre() : "N/A") + // Asegúrate de que `Producto` tenga un método getNombre
+                ", cantidad=" + cantidad +
+                ", precio=" + precio +
+                '}';
+    }
 }

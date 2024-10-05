@@ -29,7 +29,7 @@ public class Servicio {
 
     @NotNull
     @Column(nullable = false)
-    private String duracion;
+    private Integer duracion;
 
     @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL)
     private List<DetalleServicioCita> detalleServicios; // Relación inversa con DetalleServicio

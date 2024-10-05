@@ -1,7 +1,6 @@
 package co.edu.uniquindio.proyectois2backend.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -27,8 +26,8 @@ public class Pago {
     @Column(nullable = false)
     private LocalDateTime fechaPago; // Fecha y hora del pago
 
-    @NotNull
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "estado_pago_id", nullable = false)
     private EstadoPago estadoPago;
 
     @OneToOne

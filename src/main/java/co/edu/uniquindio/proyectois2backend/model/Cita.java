@@ -39,8 +39,8 @@ public class Cita {
     @Column(nullable = false)
     private Boolean confirmacion;
 
-    @NotNull
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "estado_cita_id", nullable = false)
     private EstadoCita estadoCita;
 
     private Double propina;
@@ -60,4 +60,5 @@ public class Cita {
     @NotNull
     @Column(nullable = false)
     private String direccion;
+
 }

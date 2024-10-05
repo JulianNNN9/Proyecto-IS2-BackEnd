@@ -36,7 +36,7 @@ public class EmailServiceImple implements EmailService {
         templateModel.put("fechaCita", confirmacionDTO.fechaCita());
         templateModel.put("horaCita", confirmacionDTO.horaCita());
         templateModel.put("nombreEstilista", confirmacionDTO.nombreEstilista());
-        templateModel.put("direccion", confirmacionDTO.direccion());
+        templateModel.put("direccionPeluqueria", confirmacionDTO.direccionPeluqueria());
         templateModel.put("telefonoPeluqueria", confirmacionDTO.telefonoPeluqueria());
 
 
@@ -63,7 +63,7 @@ public class EmailServiceImple implements EmailService {
         templateModel.put("fechaCita", recordatorioDTO.fechaCita());
         templateModel.put("horaCita", recordatorioDTO.horaCita());
         templateModel.put("nombreEstilista", recordatorioDTO.nombreEstilista());
-        templateModel.put("direccion", recordatorioDTO.direccion());
+        templateModel.put("direccionPeluqueria", recordatorioDTO.direccionPeluqueria());
         templateModel.put("telefonoPeluqueria", recordatorioDTO.telefonoPeluqueria());
 
         MimeMessage message = mailSender.createMimeMessage();

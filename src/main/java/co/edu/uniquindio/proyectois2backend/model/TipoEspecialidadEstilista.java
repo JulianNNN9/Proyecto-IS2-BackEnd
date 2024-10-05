@@ -22,6 +22,15 @@ public class TipoEspecialidadEstilista {
     @JoinColumn(name = "estilista_id", nullable = false)
     private Estilista estilista;
 
+    @ManyToOne
+    @JoinColumn(name = "tipo_especialidad_id", nullable = false)
     private TipoEspecialidad especialidad;
 
+    @Override
+    public String toString() {
+        return "TipoEspecialidadEstilista{" +
+                "id=" + id +
+                ", especialidad=" + (especialidad != null ? especialidad.getNombre() : "N/A") +
+                '}';
+    }
 }

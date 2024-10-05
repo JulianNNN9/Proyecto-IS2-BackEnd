@@ -7,7 +7,7 @@ public record ConfirmacionDTO(
         String fechaCita,
         String horaCita,
         String nombreEstilista,
-        String direccion,
+        String direccionPeluqueria,
         String telefonoPeluqueria
 ) {
 }
