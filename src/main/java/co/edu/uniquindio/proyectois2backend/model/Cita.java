@@ -1,43 +1,63 @@
 package co.edu.uniquindio.proyectois2backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
-@Table(name = "Cita")
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
-@RequiredArgsConstructor
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+@Table(name = "Cita")
 public class Cita {
 
     @Id
-    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
+    @NotNull
+    @Column(nullable = false)
     private LocalDateTime fecha;
-    @ManyToMany
-    @JoinTable(
-            name = "cita_servicios",
-            joinColumns = @JoinColumn(name = "cita_id"),
-            inverseJoinColumns = @JoinColumn(name = "servicio_id")
-    )
-    private List<Servicio> idServicios;
+
+    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DetalleServicioCita> detalleServicioCitas; // Lista de DetalleServicio en lugar de servicios
+
+    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DetalleProductoCita> detalleProductoCitas; // Nueva relación con productos
+
+
+    @NotNull
+    @Column(nullable = false)
     private Double totalPago;
+
+    @NotNull
+    @Column(nullable = false)
     private Boolean confirmacion;
+
+    @NotNull
+    @Column(nullable = false)
     private EstadoCita estadoCita;
+
     private Double propina;
+
     private String comentario;
+
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    private Cliente idCliente;
+    @NotNull
+    private Cliente cliente;
+
     @ManyToOne
     @JoinColumn(name = "estilista_id")
-    private Estilista idEstilista;
+    @NotNull
+    private Estilista estilista;
+
+    @NotNull
+    @Column(nullable = false)
+    private String direccion;
 }

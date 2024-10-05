@@ -1,24 +1,31 @@
 package co.edu.uniquindio.proyectois2backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Entity
-@Table(name = "Administrador")
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
-@RequiredArgsConstructor
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+@Table(name = "Administrador")
 public class Administrador {
 
     @Id
-    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
+    @NotNull
+    @Column(nullable = false)
     private String nombre;
+
+    @NotNull
+    @Column(nullable = false, unique = true)
     private String correo;
+
+    @NotNull
+    @Column(nullable = false)
     private String contrasena;
 }

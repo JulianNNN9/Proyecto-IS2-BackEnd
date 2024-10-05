@@ -1,7 +1,7 @@
 package co.edu.uniquindio.proyectois2backend.dto.cita;
 
 
-public record RecordatorioDTO(
+public record ConfirmacionDTO(
         String nombreCliente,
         String servicio,
         String fechaCita,

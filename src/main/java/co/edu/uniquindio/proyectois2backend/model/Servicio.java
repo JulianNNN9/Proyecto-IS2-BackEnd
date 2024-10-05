@@ -1,25 +1,38 @@
 package co.edu.uniquindio.proyectois2backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Entity
-@Table(name = "Servicio")
+import java.util.List;
+
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
-@RequiredArgsConstructor
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+@Table(name = "Servicio")
 public class Servicio {
 
     @Id
-    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
+    @NotNull
+    @Column(nullable = false)
     private String nombre;
+
+    @NotNull
+    @Column(nullable = false)
     private Double precio;
+
+    @NotNull
+    @Column(nullable = false)
     private String duracion;
+
+    @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL)
+    private List<DetalleServicioCita> detalleServicios; // Relación inversa con DetalleServicio
     // TODO implementar las recomendaciones de productos o servicios adicionales recomendados por el estilista
+
 }

@@ -1,5 +1,7 @@
 package co.edu.uniquindio.proyectois2backend.services.implementacion;
 
+import co.edu.uniquindio.proyectois2backend.dto.cita.ConfirmacionDTO;
+import co.edu.uniquindio.proyectois2backend.dto.cita.RecordatorioDTO;
 import co.edu.uniquindio.proyectois2backend.services.interfaces.EmailService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,8 @@ import org.thymeleaf.context.Context;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+
+import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -25,7 +29,17 @@ public class EmailServiceImple implements EmailService {
 
     @Override
     @Async
-    public void enviarConfirmacionTemplateEmail(String to, String subject, Map<String, Object> templateModel) throws MessagingException {
+    public void enviarConfirmacionTemplateEmail(String to, ConfirmacionDTO confirmacionDTO) throws MessagingException {
+        Map<String, Object> templateModel = new HashMap<>();
+        templateModel.put("nombreCliente", confirmacionDTO.nombreCliente());
+        templateModel.put("servicio", confirmacionDTO.servicio());
+        templateModel.put("fechaCita", confirmacionDTO.fechaCita());
+        templateModel.put("horaCita", confirmacionDTO.horaCita());
+        templateModel.put("nombreEstilista", confirmacionDTO.nombreEstilista());
+        templateModel.put("direccion", confirmacionDTO.direccion());
+        templateModel.put("telefonoPeluqueria", confirmacionDTO.telefonoPeluqueria());
+
+
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
@@ -35,24 +49,33 @@ public class EmailServiceImple implements EmailService {
         String htmlBody = templateEngine.process("confirmacionTemplate", context);
 
         helper.setTo(to);
-        helper.setSubject(subject);
+        helper.setSubject("Confirmacion de Cita");
         helper.setText(htmlBody, true);
 
         mailSender.send(message);
     }
     @Override
     @Async
-    public void enviarRecordatorioTemplateEmail(String to, String subject, Map<String, Object> templateModel) throws MessagingException {
+    public void enviarRecordatorioTemplateEmail(String to, RecordatorioDTO recordatorioDTO) throws MessagingException {
+        Map<String, Object> templateModel = new HashMap<>();
+        templateModel.put("nombreCliente", recordatorioDTO.nombreCliente());
+        templateModel.put("servicio", recordatorioDTO.servicio());
+        templateModel.put("fechaCita", recordatorioDTO.fechaCita());
+        templateModel.put("horaCita", recordatorioDTO.horaCita());
+        templateModel.put("nombreEstilista", recordatorioDTO.nombreEstilista());
+        templateModel.put("direccion", recordatorioDTO.direccion());
+        templateModel.put("telefonoPeluqueria", recordatorioDTO.telefonoPeluqueria());
+
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         Context context = new Context();
         context.setVariables(templateModel);
 
-        String htmlBody = templateEngine.process("confirmacionTemplate", context);
+        String htmlBody = templateEngine.process("recordatorioTemplate", context);
 
         helper.setTo(to);
-        helper.setSubject(subject);
+        helper.setSubject("Recordatorio de Cita");
         helper.setText(htmlBody, true);
 
         mailSender.send(message);

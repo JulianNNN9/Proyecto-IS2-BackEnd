@@ -1,0 +1,116 @@
+CREATE TABLE Administrador (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    correo VARCHAR(255) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Cliente (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    correo VARCHAR(255) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL,
+    telefono VARCHAR(50) NOT NULL,
+    preferencias TEXT
+);
+
+CREATE TABLE Producto (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    precio DECIMAL(10, 2) NOT NULL,
+    stock INT NOT NULL,
+    marca VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Servicio (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    precio DECIMAL(10, 2) NOT NULL,
+    duracion VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE TipoEspecialidad (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Estilista (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE TipoEspecialidadEstilista (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    estilista_id BIGINT NOT NULL,
+    especialidad_id BIGINT NOT NULL,
+    FOREIGN KEY (estilista_id) REFERENCES Estilista(id),
+    FOREIGN KEY (especialidad_id) REFERENCES TipoEspecialidad(id)
+);
+
+CREATE TABLE Resenia (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    calificacion INT NOT NULL,
+    comentario TEXT NOT NULL,
+    cliente_id BIGINT,
+    estilista_id BIGINT,
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(id),
+    FOREIGN KEY (estilista_id) REFERENCES Estilista(id)
+);
+
+CREATE TABLE TipoPago (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE EstadoPago (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE EstadoCita (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Cita (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    fecha DATETIME NOT NULL,
+    totalPago DECIMAL(10, 2) NOT NULL,
+    confirmacion BOOLEAN NOT NULL,
+    estadocita_id BIGINT,
+    cliente_id BIGINT NOT NULL,
+    estilista_id BIGINT NOT NULL,
+    propina DECIMAL(10, 2),
+    comentario TEXT,
+    FOREIGN KEY (estadocita_id) REFERENCES EstadoCita(id),
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(id),
+    FOREIGN KEY (estilista_id) REFERENCES Estilista(id)
+);
+CREATE TABLE DetalleServicio (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cita_id BIGINT NOT NULL,
+    servicio_id BIGINT NOT NULL,
+    FOREIGN KEY (cita_id) REFERENCES Cita(id),
+    FOREIGN KEY (servicio_id) REFERENCES Servicio(id)
+);
+CREATE TABLE DetalleProductoCita (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cita_id BIGINT NOT NULL,
+    producto_id BIGINT NOT NULL,
+    cantidad INT NOT NULL,
+    precio DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (cita_id) REFERENCES Cita(id),
+    FOREIGN KEY (producto_id) REFERENCES Producto(id)
+);
+
+CREATE TABLE Pago (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    total DECIMAL(10, 2),
+    fechaPago DATETIME NOT NULL,
+    tipopago_id BIGINT,
+    estadopago_id BIGINT,
+    cita_id BIGINT,
+    FOREIGN KEY (tipopago_id) REFERENCES TipoPago(id),
+    FOREIGN KEY (estadopago_id) REFERENCES EstadoPago(id),
+    FOREIGN KEY (cita_id) REFERENCES Cita(id)
+);

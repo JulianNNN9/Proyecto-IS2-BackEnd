@@ -1,28 +1,37 @@
 package co.edu.uniquindio.proyectois2backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
-@Table(name = "Pago")
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
-@RequiredArgsConstructor
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+@Table(name = "Pago")
 public class Pago {
 
     @Id
-    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     private Double total;
+
     @ElementCollection
     private List<String> detallePago;
+
+    @Column(nullable = false)
+    private LocalDateTime fechaPago; // Fecha y hora del pago
+
+    @NotNull
+    @Column(nullable = false)
     private EstadoPago estadoPago;
-    // TODO ¿Implementar pasarela?
+
+    @OneToOne
+    @JoinColumn(name = "cita_id")
+    private Cita Cita;
 }

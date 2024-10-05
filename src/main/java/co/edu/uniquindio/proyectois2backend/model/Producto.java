@@ -1,25 +1,35 @@
 package co.edu.uniquindio.proyectois2backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Entity
-@Table(name = "Producto")
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
-@RequiredArgsConstructor
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+@Table(name = "Producto")
 public class Producto {
 
     @Id
-    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
+    @NotNull
+    @Column(nullable = false)
     private String nombre;
+
+    @NotNull
+    @Column(nullable = false)
     private Double precio;
+
+    @NotNull
+    @Column(nullable = false)
     private Integer stock;
-    private String proveedor;
+
+    @NotNull
+    @Column(nullable = false)
+    private String marca;
 }

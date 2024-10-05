@@ -62,8 +62,10 @@
         <div class="email-body">
             <p>Hola <span class="highlight" th:text="${nombreCliente}">[Nombre del cliente]</span>,</p>
             <p>Te recordamos que tienes una cita programada para el servicio de <span class="highlight" th:text="${servicio}">[Servicio]</span> el:</p>
-            <p><strong th:text="${fechaCita}">[Fecha y hora de la cita]</strong></p>
+            <p><strong>Fecha:</strong> <span th:text="${fechaCita}">[Fecha de la cita]</span></p>
+            <p><strong>Hora:</strong> <span th:text="${horaCita}">[Hora de la cita]</span></p>
             <p>Estilista asignado: <span th:text="${nombreEstilista}">[Nombre del estilista]</span></p>
+            <p>Dirección: <span th:text="${direccionPeluqueria}">[Dirección de la peluquería]</span></p>
             <p>Si tienes alguna pregunta, no dudes en contactarnos al <span th:text="${telefonoPeluqueria}">[Teléfono]</span>.</p>
             <a href="https://tu-sitio-web" class="cta-button">Confirmar asistencia</a>
         </div>
