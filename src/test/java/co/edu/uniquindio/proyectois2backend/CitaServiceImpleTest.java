@@ -44,7 +44,7 @@ public class CitaServiceImpleTest {
     public void testConfirmarCita(){
         //Crear Otra cita para Confirmarla
         CrearCitaDTO crearCitaDTO = new CrearCitaDTO(
-                "2024-10-07T08:00:00", // Fecha y hora de la cita
+                "2024-11-07T08:00:00", // Fecha y hora de la cita
                 List.of(
                         new DetalleServicioCitaDTO(1L, 20000.00), // Servicio Corte de cabello
                         new DetalleServicioCitaDTO(2L, 15000.00)  // Servicio Peinado

@@ -43,14 +43,11 @@ public class CitaServiceImple implements CitaService {
         List<Cita> citasDeHoy = citaRepository.obtenerCitasPorFecha(hoy);
 
         for (Cita cita : citasDeHoy) {
-            String nombreServicios = "";
-            for(DetalleServicioCita detalleServicio: cita.getDetalleServicioCitas()){
-                nombreServicios += detalleServicio.getServicio().getNombre() + ", ";
-            }
             RecordatorioDTO recordatorioDTO = crearRecordatorioDTO(cita);
             emailService.enviarRecordatorioTemplateEmail(cita.getCliente().getCorreo(), recordatorioDTO);
         }
     }
+
     @Override
     public Long crearCita(CrearCitaDTO crearCitaDTO) throws Exception {
 
