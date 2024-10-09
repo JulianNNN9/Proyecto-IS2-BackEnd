@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/cita")
 @RequiredArgsConstructor
@@ -26,8 +27,8 @@ public class CitaControlador {
         citaService.confirmarCita(citaId);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Cita confirmada correctamente"));
     }
-    @GetMapping("/saludo")
-    public String saludo() {
-        return "¡Hola, mundo!";
+    @PostMapping("/saludo")
+    public ResponseEntity<String> saludo() {
+        return ResponseEntity.ok().body("Hola Mundo");
     }
 }
