@@ -26,4 +26,8 @@ public class CitaControlador {
         citaService.confirmarCita(citaId);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Cita confirmada correctamente"));
     }
+    @GetMapping("/saludo")
+    public String saludo() {
+        return "¡Hola, mundo!";
+    }
 }
