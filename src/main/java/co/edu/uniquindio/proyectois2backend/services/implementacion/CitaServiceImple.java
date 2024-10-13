@@ -14,12 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -238,6 +236,55 @@ public class CitaServiceImple implements CitaService {
 
         }
         return detalleProductoCitaList;
+    }
+
+    @Override
+    public Cita cancelarCita(Long citaId) throws Exception {
+        Cita cita = citaRepository.findById(citaId)
+                .orElseThrow(() -> new Exception("Cita no encontrada"));
+
+        EstadoCita estadoCancelado = estadoCitaRepository.findByNombre("CANCELADA")
+                .orElseThrow(() -> new Exception("Estado de cita 'CANCELADA' no encontrado"));
+
+        cita.setEstadoCita(estadoCancelado);
+
+        NotificarCancelacionDTO notificarCancelacionDTO = crearNotificarCambiosDTO(cita);
+
+        emailService.enviarEmailEstilistaCancelacionCita(cita.getEstilista().getCorreo(), notificarCancelacionDTO);
+
+        return citaRepository.save(cita);
+    }
+
+    private NotificarCancelacionDTO crearNotificarCambiosDTO(Cita cita) {
+        return new NotificarCancelacionDTO(
+                cita.getCliente().getNombre(),
+                cita.getFecha()
+        );
+    }
+
+    @Override
+    public Cita reprogramarCita(Long citaId, LocalDateTime nuevaFecha) throws Exception {
+        Cita cita = citaRepository.findById(citaId)
+                .orElseThrow(() -> new Exception("Cita no encontrada"));
+
+        //email
+
+        // Cambiamos la fecha de la cita
+        cita.setFecha(nuevaFecha);
+
+        EstadoCita estadoReprogramada = estadoCitaRepository.findByNombre("REPROGRAMADA")
+                .orElseThrow(() -> new Exception("Estado de cita 'REPROGRAMADA' no encontrado"));
+
+        cita.setEstadoCita(estadoReprogramada);
+        return citaRepository.save(cita);
+    }
+
+    private NotificarReprogramacionDTO crearNotificarReprogramacionDTO(Cita cita, LocalDateTime nuevaFecha){
+        return new NotificarReprogramacionDTO(
+                cita.getCliente().getNombre(),
+                cita.getFecha(),
+                nuevaFecha
+        );
     }
 
 }
