@@ -9,4 +9,5 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     @Query("SELECT c.correo FROM Cliente c WHERE c.id = :idCliente")
     String obtenerCorreoClientePorId(@Param("idCliente") Long idCliente);
+
 }
