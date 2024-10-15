@@ -23,6 +23,10 @@ public class Estilista {
     @Column(nullable = false)
     private String nombre;
 
+    @NotNull
+    @Column(nullable = false)
+    private String correo;
+
     @OneToMany(mappedBy = "estilista", cascade = CascadeType.ALL)
     private List<TipoEspecialidadEstilista> tipoEspecialidadEstilistas;
 

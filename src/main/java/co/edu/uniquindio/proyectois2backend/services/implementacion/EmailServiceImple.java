@@ -1,11 +1,11 @@
 package co.edu.uniquindio.proyectois2backend.services.implementacion;
 
 import co.edu.uniquindio.proyectois2backend.dto.cita.ConfirmacionDTO;
+import co.edu.uniquindio.proyectois2backend.dto.cita.NotificarCancelacionDTO;
+import co.edu.uniquindio.proyectois2backend.dto.cita.NotificarReprogramacionDTO;
 import co.edu.uniquindio.proyectois2backend.dto.cita.RecordatorioDTO;
 import co.edu.uniquindio.proyectois2backend.services.interfaces.EmailService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -76,6 +76,51 @@ public class EmailServiceImple implements EmailService {
 
         helper.setTo(to);
         helper.setSubject("Recordatorio de Cita");
+        helper.setText(htmlBody, true);
+
+        mailSender.send(message);
+    }
+
+    @Async
+    @Override
+    public void enviarEmailEstilistaCancelacionCita(String to, NotificarCancelacionDTO notificarCancelacionDTO) throws MessagingException {
+        Map<String, Object> templateModel = new HashMap<>();
+        templateModel.put("nombreCliente", notificarCancelacionDTO.nombreCliente());
+        templateModel.put("fechaCita", notificarCancelacionDTO.fecha());
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        Context context = new Context();
+        context.setVariables(templateModel);
+
+        String htmlBody = templateEngine.process("notificarCancelacionTemplate", context);
+
+        helper.setTo(to);
+        helper.setSubject("La cita ha sido cancelada.");
+        helper.setText(htmlBody, true);
+
+        mailSender.send(message);
+    }
+
+    @Async
+    @Override
+    public void enviarEmailEstilistaCambiosCita(String to, NotificarReprogramacionDTO notificarReprogramacionDTO) throws MessagingException {
+        Map<String, Object> templateModel = new HashMap<>();
+        templateModel.put("nombreCliente", notificarReprogramacionDTO.nombreCliente());
+        templateModel.put("fechaCitaAntigua", notificarReprogramacionDTO.fechaCitaAntigua());
+        templateModel.put("fechaCitaNueva", notificarReprogramacionDTO.FechaCitaNueva());
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        Context context = new Context();
+        context.setVariables(templateModel);
+
+        String htmlBody = templateEngine.process("notificarCambiosTemplate", context);
+
+        helper.setTo(to);
+        helper.setSubject("La fecha de la cita ha sido modificada.");
         helper.setText(htmlBody, true);
 
         mailSender.send(message);
