@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -118,6 +119,45 @@ public class CitaServiceImple implements CitaService {
 
         ConfirmacionDTO confirmacionDTO = crearConfirmacionDTO(cita);
         emailService.enviarConfirmacionTemplateEmail(cita.getCliente().getCorreo(), confirmacionDTO );
+    }
+    @Override
+    public List<InformacionCitasClienteDTO> obtenerHistorialCliente(Long clienteId) {
+        List<Cita> citas = citaRepository.obtenerCitasPorCliente(clienteId); // Asume que existe un método que encuentra citas por cliente
+        List<InformacionCitasClienteDTO> historialCitas = new ArrayList<>();
+
+        for (Cita cita : citas) {
+            List<InformacionDetallesServiciosCitaClienteDTO> serviciosDTO = cita.getDetalleServicioCitas().stream()
+                    .map(detalleServicio -> new InformacionDetallesServiciosCitaClienteDTO(
+                            detalleServicio.getId(),
+                            detalleServicio.getServicio().getNombre(),
+                            detalleServicio.getPrecio()
+                    ))
+                    .collect(Collectors.toList());
+
+            List<InformacionDetallesProductosCitaClienteDTO> productosDTO = cita.getDetalleProductoCitas().stream()
+                    .map(detalleProducto -> new InformacionDetallesProductosCitaClienteDTO(
+                            detalleProducto.getId(),
+                            detalleProducto.getProducto().getNombre(),
+                            detalleProducto.getCantidad(),
+                            detalleProducto.getPrecio()
+                    ))
+                    .collect(Collectors.toList());
+
+            // Crear el DTO de la cita con toda la información
+            InformacionCitasClienteDTO citaDTO = new InformacionCitasClienteDTO(
+                    cita.getId(),
+                    cita.getFecha().toString(),
+                    serviciosDTO,
+                    productosDTO,
+                    cita.getComentario(),
+                    cita.getCliente().getNombre(),
+                    cita.getEstilista().getNombre()
+            );
+
+            historialCitas.add(citaDTO);
+        }
+
+        return historialCitas;
     }
 
     private ConfirmacionDTO crearConfirmacionDTO(Cita cita) {
