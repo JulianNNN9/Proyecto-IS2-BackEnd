@@ -31,4 +31,17 @@ public class ClienteServiceImple implements ClienteService {
         }
         
     }
+
+    @Override
+    public boolean buscarCliente (Cliente cliente) throws Exception{
+
+        if (!clienteRepository.ExisteCliente(cliente.getCorreo(), cliente.getContrasena())){
+
+            return false; // busca el cliente en la base de datos
+        }else{
+
+            return true;
+        }
+
+    }
 }

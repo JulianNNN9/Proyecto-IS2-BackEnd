@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyectois2backend.controllers;
 
 import co.edu.uniquindio.proyectois2backend.model.Cliente;
+import co.edu.uniquindio.proyectois2backend.services.implementacion.ClienteServiceImple;
 import co.edu.uniquindio.proyectois2backend.services.interfaces.ClienteService;
 import lombok.RequiredArgsConstructor;
 
@@ -14,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/clientes") // Endpoint base para el controlador de clientes
 public class ClienteController {
 
-    private final ClienteService clienteService;
+    private final ClienteServiceImple clienteServiceImple;
 
     @PostMapping("/crear")
     public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente) {
         // Llama al servicio para crear el cliente
         try {
-            Cliente nuevoCliente = clienteService.crearCliente(cliente);
+            Cliente nuevoCliente = clienteServiceImple.crearCliente(cliente);
             return new ResponseEntity<>(nuevoCliente, HttpStatus.CREATED); // Retorna el cliente creado con un estado 201
         } catch (Exception e) {
 
@@ -32,6 +33,14 @@ public class ClienteController {
     
         }
         
+    }
+
+    @PostMapping("/InicioSesion")
+    public boolean buscarCliente(@RequestBody Cliente cliente) throws Exception {
+        // Llama al servicio para crear el cliente
+
+            boolean response = clienteServiceImple.buscarCliente(cliente);
+            return response;
     }
     
     @PostMapping("/saludo")
