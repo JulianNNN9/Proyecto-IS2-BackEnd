@@ -121,6 +121,7 @@ connection.connect((err) => {
         ['PENDIENTE'],
         ['CANCELADA'],
         ['REPROGRAMADA'],
+        ['FINALIZADA'],
         ['CONFIRMADA']
     ];
     

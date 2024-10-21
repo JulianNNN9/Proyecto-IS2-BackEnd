@@ -12,4 +12,7 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     @Query("SELECT c FROM Cita c WHERE DATE(c.fecha) = :fecha")
     List<Cita> obtenerCitasPorFecha(@Param("fecha") LocalDate fecha);
 
+    @Query("SELECT c FROM Cita c WHERE c.cliente.id = :idCliente")
+    List<Cita> obtenerCitasPorCliente(@Param("idCliente") Long idCliente);
+
 }
