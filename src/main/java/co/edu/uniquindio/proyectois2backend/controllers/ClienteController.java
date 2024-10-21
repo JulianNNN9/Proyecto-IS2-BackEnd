@@ -38,6 +38,14 @@ public class ClienteController {
         }
         
     }
+
+    @PostMapping("/InicioSesion")
+    public boolean buscarCliente(@RequestBody Cliente cliente) throws Exception {
+        // Llama al servicio para crear el cliente
+
+            boolean response = clienteServiceImple.buscarCliente(cliente);
+            return response;
+    }
     
     @PostMapping("/saludo")
     public ResponseEntity<String> saludo() {
