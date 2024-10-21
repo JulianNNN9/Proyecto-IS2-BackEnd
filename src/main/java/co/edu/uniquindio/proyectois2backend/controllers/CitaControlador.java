@@ -5,6 +5,7 @@ import co.edu.uniquindio.proyectois2backend.dto.cita.CrearCitaDTO;
 import co.edu.uniquindio.proyectois2backend.dto.cita.InformacionCitasClienteDTO;
 import co.edu.uniquindio.proyectois2backend.dto.cita.ModificarCitaDTO;
 import co.edu.uniquindio.proyectois2backend.model.Cita;
+import co.edu.uniquindio.proyectois2backend.services.implementacion.CitaServiceImple;
 import co.edu.uniquindio.proyectois2backend.services.interfaces.CitaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,29 +23,29 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CitaControlador {
 
-    private final CitaService citaService;
+    private final CitaServiceImple citaServiceImple;
 
     @PostMapping("/crear-cita")
     public ResponseEntity<MensajeDTO<String>> crearCita(@Valid @RequestBody CrearCitaDTO crearCitaDTO) throws Exception {
-        citaService.crearCita(crearCitaDTO);
+        citaServiceImple.crearCita(crearCitaDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Cita creada correctamente"));
     }
 
     @PostMapping("/confirmar-cita/{id}")
     public ResponseEntity<MensajeDTO<String>> confirmarCita(@PathVariable("id") Long citaId) throws Exception {
-        citaService.confirmarCita(citaId);
+        citaServiceImple.confirmarCita(citaId);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Cita confirmada correctamente"));
     }
     @GetMapping("/{clienteId}/historial-citas")
     public ResponseEntity<List<InformacionCitasClienteDTO>> obtenerHistorialCliente(@PathVariable Long clienteId) {
-        List<InformacionCitasClienteDTO> historial = citaService.obtenerHistorialCliente(clienteId);
+        List<InformacionCitasClienteDTO> historial = citaServiceImple.obtenerHistorialCliente(clienteId);
         return ResponseEntity.ok(historial);
     }
     // Endpoint para cancelar una cita
     @PutMapping("/{citaId}/cancelar-cita")
     public ResponseEntity<MensajeDTO<String>> cancelarCita(@PathVariable Long citaId) {
         try {
-            Cita citaCancelada = citaService.cancelarCita(citaId);
+            Cita citaCancelada = citaServiceImple.cancelarCita(citaId);
             return ResponseEntity.ok(new MensajeDTO<>(false, "La cita ha sido cancelada exitosamente"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MensajeDTO<>(true, e.getMessage()));
@@ -54,7 +55,7 @@ public class CitaControlador {
     @PutMapping("/{citaId}/finalizar-cita")
     public ResponseEntity<MensajeDTO<String>> finalizarCita(@PathVariable Long citaId) {
         try {
-            citaService.finalizarCita(citaId);
+            citaServiceImple.finalizarCita(citaId);
             return ResponseEntity.ok(new MensajeDTO<>(false, "La cita ha sido finalizada"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MensajeDTO<>(true, e.getMessage()));
@@ -65,7 +66,7 @@ public class CitaControlador {
         System.out.println(citaId);
         System.out.println(modificarCitaDTO);
         try {
-            Cita citaModificada = citaService.modificarCitaPendiente(citaId, modificarCitaDTO);
+            Cita citaModificada = citaServiceImple.modificarCitaPendiente(citaId, modificarCitaDTO);
             return ResponseEntity.ok(new MensajeDTO<>(false, "Cita modificada exitosamente"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO<>(true, e.getMessage()));
@@ -79,7 +80,7 @@ public class CitaControlador {
         System.out.println(citaId);
         System.out.println(comentario);
         try {
-            Cita citaModificada = citaService.modificarComentarioCita(citaId, comentario);
+            Cita citaModificada = citaServiceImple.modificarComentarioCita(citaId, comentario);
             return ResponseEntity.ok(new MensajeDTO<>(false, "Su comentario se agregó correctamente"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO<>(true, e.getMessage()));
@@ -92,7 +93,7 @@ public class CitaControlador {
             @PathVariable Long citaId,
             @RequestParam double propina) {
         try {
-            Cita citaModificada = citaService.agregarPropinaCita(citaId, propina);
+            Cita citaModificada = citaServiceImple.agregarPropinaCita(citaId, propina);
             return ResponseEntity.ok(new MensajeDTO<>(false, "Propina Agregada"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO<>(true, e.getMessage()));
@@ -105,7 +106,7 @@ public class CitaControlador {
             @PathVariable Long citaId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime nuevaFecha) {
         try {
-            Cita citaReprogramada = citaService.reprogramarCita(citaId, nuevaFecha);
+            Cita citaReprogramada = citaServiceImple.reprogramarCita(citaId, nuevaFecha);
             return ResponseEntity.ok(new MensajeDTO<>(false, "Su cita se reprogramó exitosamente"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO<>(true, e.getMessage()));
