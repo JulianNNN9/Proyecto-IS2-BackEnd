@@ -1,6 +1,5 @@
 package co.edu.uniquindio.proyectois2backend.dto.cita;
 
-import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 

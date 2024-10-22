@@ -1,14 +1,12 @@
 package co.edu.uniquindio.proyectois2backend.dto.cita;
 
-
-public record InformacionDetallesServiciosCitaClienteDTO(
+public record InformacionEstilistaDTO(
 
         Long id,
 
         String nombre,
 
-        double precio
-
-){}
+        String correo
 
 
+) {}

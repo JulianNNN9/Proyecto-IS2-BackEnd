@@ -1,6 +1,5 @@
 package co.edu.uniquindio.proyectois2backend.services.interfaces;
 
-import co.edu.uniquindio.proyectois2backend.dto.cita.ConfirmarCitaDTO;
 import co.edu.uniquindio.proyectois2backend.dto.cita.CrearCitaDTO;
 import co.edu.uniquindio.proyectois2backend.dto.cita.InformacionCitasClienteDTO;
 import co.edu.uniquindio.proyectois2backend.dto.cita.ModificarCitaDTO;
