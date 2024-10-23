@@ -30,7 +30,6 @@ public class Cita {
     @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleProductoCita> detalleProductoCitas; // Nueva relación con productos
 
-
     @NotNull
     @Column(nullable = false)
     private Double totalPago;

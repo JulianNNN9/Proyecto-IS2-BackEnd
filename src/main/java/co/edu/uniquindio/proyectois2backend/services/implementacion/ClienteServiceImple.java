@@ -1,21 +1,30 @@
 package co.edu.uniquindio.proyectois2backend.services.implementacion;
 
+import co.edu.uniquindio.proyectois2backend.repositories.ClienteRepository;
+import co.edu.uniquindio.proyectois2backend.services.interfaces.ClienteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import co.edu.uniquindio.proyectois2backend.model.Cliente;
 import co.edu.uniquindio.proyectois2backend.repositories.ClienteRepository;
 import co.edu.uniquindio.proyectois2backend.services.interfaces.ClienteService;
 import lombok.RequiredArgsConstructor;
-
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class ClienteServiceImple implements ClienteService {
 
-    private final ClienteRepository clienteRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Override
+    public List<Object[]> revisarPreferenciasPorNombre(String nombreCliente) throws Exception {
+        return clienteRepository.findPreferenciasByNombreCliente(nombreCliente);
+    }
 
     @Override
     public Cliente crearCliente(Cliente cliente) throws Exception {
@@ -65,6 +74,4 @@ public class ClienteServiceImple implements ClienteService {
         
 
     }
-
-
 }

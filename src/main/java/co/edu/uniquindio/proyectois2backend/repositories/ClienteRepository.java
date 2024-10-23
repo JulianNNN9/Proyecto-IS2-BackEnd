@@ -5,11 +5,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     @Query("SELECT c.correo FROM Cliente c WHERE c.id = :idCliente")
     String obtenerCorreoClientePorId(@Param("idCliente") Long idCliente);
 
+    @Query("SELECT c.nombre, p FROM Cliente c JOIN c.preferenciaClientes p WHERE c.nombre = :nombreCliente")
+    List<Object[]> findPreferenciasByNombreCliente(@Param("nombreCliente") String nombreCliente);
+  
     @Query("SELECT COUNT(c) > 0 FROM Cliente c WHERE c.correo = :correo")
     boolean ExisteClienteCorreo(@Param("correo") String correo);  
 
@@ -18,5 +23,4 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     @Query("SELECT c.id FROM Cliente c WHERE c.correo = :correo")
     Long obtenerIdCliente(@Param("correo") String correo);
-    
 }
