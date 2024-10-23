@@ -15,4 +15,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     @Query("SELECT COUNT(c) > 0 FROM Cliente c WHERE c.correo = :correo AND c.contrasena = :contrasena")
     boolean ExisteCliente(@Param("correo") String correo, @Param("contrasena") String contrasena );  
+
+    @Query("SELECT c.id FROM Cliente c WHERE c.correo = :correo")
+    Long obtenerIdCliente(@Param("correo") String correo);
+    
 }

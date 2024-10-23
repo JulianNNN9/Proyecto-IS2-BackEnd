@@ -4,6 +4,8 @@ import co.edu.uniquindio.proyectois2backend.model.Cliente;
 import co.edu.uniquindio.proyectois2backend.services.interfaces.ClienteService;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +42,22 @@ public class ClienteController {
 
             boolean response = clienteService.buscarCliente(cliente);
             return response;
+    }
+
+
+    @PostMapping("/DatosCliente") // Trae los datos completos de algun cliente en especifico @Param Correo
+    public Optional<Cliente> datosCliente (@RequestBody Cliente cliente) throws Exception {
+
+        try {
+
+            Optional<Cliente> clienteEncontrado = clienteService.buscarDatosCliente(cliente);
+
+            return clienteEncontrado;
+            
+        } catch (Exception e) {
+            
+            throw new Exception("No se puedo encontrar el usuario");
+        }
     }
     
     @PostMapping("/saludo")

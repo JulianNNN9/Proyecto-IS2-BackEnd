@@ -6,10 +6,10 @@ public record InformacionProductoDTO (
 
         String nombre,
 
+        Integer stock,
+
         double precio,
 
-        String marca,
-
-        Integer stock
+        String marca
 
 ){}
