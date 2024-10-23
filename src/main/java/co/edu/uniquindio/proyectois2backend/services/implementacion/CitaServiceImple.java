@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -86,7 +87,7 @@ public class CitaServiceImple implements CitaService {
 
         double totalAPagar = calcularTotalAPagarServiciosYProductos(detalleServicioCitasList, detalleProductoCitaList);
         citaNueva.setTotalPago(totalAPagar);
-
+        citaNueva.setPropina(0.0);
         Cita citaGuardata = citaRepository.save(citaNueva);
 
         detalleServicioCitaRepository.saveAll(detalleServicioCitasList);
@@ -118,6 +119,45 @@ public class CitaServiceImple implements CitaService {
 
         ConfirmacionDTO confirmacionDTO = crearConfirmacionDTO(cita);
         emailService.enviarConfirmacionTemplateEmail(cita.getCliente().getCorreo(), confirmacionDTO );
+    }
+    @Override
+    public List<InformacionCitasClienteDTO> obtenerHistorialCliente(Long clienteId) {
+        List<Cita> citas = citaRepository.obtenerCitasPorCliente(clienteId); // Asume que existe un método que encuentra citas por cliente
+        List<InformacionCitasClienteDTO> historialCitas = new ArrayList<>();
+
+        for (Cita cita : citas) {
+            List<InformacionDetallesServiciosCitaClienteDTO> serviciosDTO = cita.getDetalleServicioCitas().stream()
+                    .map(detalleServicio -> new InformacionDetallesServiciosCitaClienteDTO(
+                            detalleServicio.getServicio().getId(),
+                            detalleServicio.getServicio().getNombre(),
+                            detalleServicio.getPrecio()
+                    ))
+                    .collect(Collectors.toList());
+
+            List<InformacionDetallesProductosCitaClienteDTO> productosDTO = cita.getDetalleProductoCitas().stream()
+                    .map(detalleProducto -> new InformacionDetallesProductosCitaClienteDTO(
+                            detalleProducto.getProducto().getId(),
+                            detalleProducto.getProducto().getNombre(),
+                            detalleProducto.getCantidad(),
+                            detalleProducto.getPrecio()
+                    ))
+                    .collect(Collectors.toList());
+
+            // Crear el DTO de la cita con toda la información
+            InformacionCitasClienteDTO citaDTO = new InformacionCitasClienteDTO(
+                    cita.getId(),
+                    cita.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
+                    serviciosDTO,
+                    productosDTO,
+                    cita.getComentario(),
+                    cita.getCliente().getNombre(),
+                    cita.getEstilista().getNombre()
+            );
+
+            historialCitas.add(citaDTO);
+        }
+
+        return historialCitas;
     }
 
     private ConfirmacionDTO crearConfirmacionDTO(Cita cita) {
@@ -200,7 +240,7 @@ public class CitaServiceImple implements CitaService {
     private List<DetalleServicioCita> convertirDetallesServicioCita(Cita cita, List<DetalleServicioCitaDTO> dtos) throws Exception {
         List<DetalleServicioCita> detalleServicioCitasList = new ArrayList<>();
         for (DetalleServicioCitaDTO dto : dtos) {
-            Optional<Servicio> servicioEncontrado = servicioRepository.findById(dto.idServicio());
+            Optional<Servicio> servicioEncontrado = servicioRepository.findById(dto.id());
             if(servicioEncontrado.isEmpty()){
                 throw new Exception("Servicio no encontrado");
             }
@@ -220,7 +260,7 @@ public class CitaServiceImple implements CitaService {
     private List<DetalleProductoCita> convertirDetallesProductoCita(Cita cita, List<DetalleProductoCitaDTO> dtos) throws Exception {
         List<DetalleProductoCita> detalleProductoCitaList = new ArrayList<>();
         for (DetalleProductoCitaDTO dto : dtos) {
-            Optional<Producto> productoEncontrado = productoRepository.findById(dto.idProducto());
+            Optional<Producto> productoEncontrado = productoRepository.findById(dto.id());
             if(productoEncontrado.isEmpty()){
                 throw new Exception("Producto no encontrado");
             }
@@ -229,7 +269,7 @@ public class CitaServiceImple implements CitaService {
             DetalleProductoCita detalleProductoCita = new DetalleProductoCita();
             detalleProductoCita.setCita(cita);
             detalleProductoCita.setProducto(producto);
-            detalleProductoCita.setCantidad(dto.cantidad());
+            detalleProductoCita.setCantidad(dto.stock());
             detalleProductoCita.setPrecio(dto.precio());
 
             detalleProductoCitaList.add(detalleProductoCita);
@@ -242,7 +282,9 @@ public class CitaServiceImple implements CitaService {
     public Cita cancelarCita(Long citaId) throws Exception {
         Cita cita = citaRepository.findById(citaId)
                 .orElseThrow(() -> new Exception("Cita no encontrada"));
-
+        if(cita.getEstadoCita().getNombre().equals("CANCELADA")){
+            throw new Exception("La cita ya se encuentra cancelada");
+        }
         EstadoCita estadoCancelado = estadoCitaRepository.findByNombre("CANCELADA")
                 .orElseThrow(() -> new Exception("Estado de cita 'CANCELADA' no encontrado"));
 
@@ -254,28 +296,142 @@ public class CitaServiceImple implements CitaService {
 
         return citaRepository.save(cita);
     }
+    @Override
+    public void finalizarCita(Long citaId) throws Exception {
+        Cita cita = citaRepository.findById(citaId)
+                .orElseThrow(() -> new Exception("Cita no encontrada"));
+        if(cita.getEstadoCita().getNombre().equals("FINALIZADA")){
+            throw new Exception("La cita ya se encuentra finalizada");
+        }
+        EstadoCita estadoCancelado = estadoCitaRepository.findByNombre("FINALIZADA")
+                .orElseThrow(() -> new Exception("Estado de cita 'FINALIZADA' no encontrado"));
 
+        cita.setEstadoCita(estadoCancelado);
+
+    }
     private NotificarCancelacionDTO crearNotificarCambiosDTO(Cita cita) {
         return new NotificarCancelacionDTO(
                 cita.getCliente().getNombre(),
                 cita.getFecha()
         );
     }
+    @Override
+    public Cita modificarCitaPendiente(Long citaId, ModificarCitaDTO modificarCitaDTO) throws Exception {
+        // Buscar la cita existente
+        Cita citaExistente = citaRepository.findById(citaId)
+                .orElseThrow(() -> new Exception("Cita no encontrada"));
 
+        // Verificar si la cita está PENDIENTE
+        if (!citaExistente.getEstadoCita().getNombre().equals("PENDIENTE")) {
+            throw new Exception("Solo se pueden modificar citas pendientes");
+        }
+        // Actualizar la fecha si es necesario
+        if (modificarCitaDTO.fecha() != null) {
+            if(!citaExistente.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")).equals(modificarCitaDTO.fecha())){
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+                LocalDateTime nuevaFechaHoraInicio = LocalDateTime.parse(modificarCitaDTO.fecha(), formatter);
+
+                // Obtener duración total de los servicios actuales de la cita
+                int duracionTotalCita = obtenerDuracionTotalServicios(citaExistente.getDetalleServicioCitas());
+
+                LocalDateTime nuevaFechaHoraFin = nuevaFechaHoraInicio.plusMinutes(duracionTotalCita); // Hora de fin
+
+                // Verificar si el horario está disponible
+                if (!isHorarioDisponible(nuevaFechaHoraInicio, nuevaFechaHoraFin)) {
+                    throw new HorarioNoDisponibleException("El horario no está disponible.");
+                }
+
+                // Actualizar la fecha de la cita
+                citaExistente.setFecha(nuevaFechaHoraInicio);
+            }
+        }
+
+        // Actualizar los detalles de servicios si es necesario
+        List<DetalleServicioCita> nuevosDetallesServicio = convertirDetallesServicioCita(citaExistente, modificarCitaDTO.detalleServicioCitaDTOS());
+        if (!nuevosDetallesServicio.isEmpty()) {
+            citaExistente.getDetalleServicioCitas().clear();
+            citaExistente.getDetalleServicioCitas().addAll(nuevosDetallesServicio);
+            detalleServicioCitaRepository.saveAll(nuevosDetallesServicio);
+        }
+
+        // Actualizar los detalles de productos si es necesario
+        List<DetalleProductoCita> nuevosDetallesProducto = convertirDetallesProductoCita(citaExistente, modificarCitaDTO.detalleProductoCitaDTOS());
+        if (!nuevosDetallesProducto.isEmpty()) {
+            citaExistente.getDetalleProductoCitas().clear();
+            citaExistente.getDetalleProductoCitas().addAll(nuevosDetallesProducto);
+            detalleProductoCitaRepository.saveAll(nuevosDetallesProducto);
+        }
+
+        // Recalcular el total a pagar en base a los nuevos servicios/productos
+        double totalAPagar = calcularTotalAPagarServiciosYProductos(citaExistente.getDetalleServicioCitas(), citaExistente.getDetalleProductoCitas());
+        citaExistente.setTotalPago(totalAPagar);
+
+        // Guardar la cita modificada y devolverla
+        return citaRepository.save(citaExistente);
+    }
+    @Override
+    public Cita modificarComentarioCita(Long citaId, String comentario) throws Exception {
+        // Buscar la cita existente
+        Cita citaExistente = citaRepository.findById(citaId)
+                .orElseThrow(() -> new Exception("Cita no encontrada"));
+
+        // Verificar si la cita no está CONFIRMADA o REPROGRAMADA
+        if (!citaExistente.getEstadoCita().getNombre().equals("CONFIRMADA") && !citaExistente.getEstadoCita().getNombre().equals("REPROGRAMADA")
+                && !citaExistente.getEstadoCita().getNombre().equals("FINALIZADA")) {
+            throw new Exception("Solo se pueden comentar citas confirmadas o reprogramadas o finalizadas");
+        }
+
+        if (comentario != null) {
+            citaExistente.setComentario(comentario);
+        }
+        // Guardar la cita modificada y devolverla
+        return citaRepository.save(citaExistente);
+    }
+    @Override
+    public Cita agregarPropinaCita(Long citaId, double propina) throws Exception {
+        // Buscar la cita existente
+        Cita citaExistente = citaRepository.findById(citaId)
+                .orElseThrow(() -> new Exception("Cita no encontrada"));
+
+        if (propina <= 0) {
+            throw new Exception("Propina no Valida");
+        }
+        citaExistente.setPropina(citaExistente.getPropina() + propina);
+        // Guardar la cita modificada y devolverla
+        return citaRepository.save(citaExistente);
+    }
     @Override
     public Cita reprogramarCita(Long citaId, LocalDateTime nuevaFecha) throws Exception {
+        // Buscar la cita existente
         Cita cita = citaRepository.findById(citaId)
                 .orElseThrow(() -> new Exception("Cita no encontrada"));
 
-        //email
+        // Verificar si la cita no está CONFIRMADA o REPROGRAMADA
+        if (!cita.getEstadoCita().getNombre().equals("CONFIRMADA") && !cita.getEstadoCita().getNombre().equals("REPROGRAMADA")) {
+            throw new Exception("Solo se pueden reprogramar citas confirmadas o reprogramadas");
+        }
 
-        // Cambiamos la fecha de la cita
+        // Obtener la duración total de los servicios actuales de la cita
+        int duracionTotalCita = obtenerDuracionTotalServicios(cita.getDetalleServicioCitas());
+
+        // Calcular la nueva hora de fin en base a la nueva fecha y duración
+        LocalDateTime nuevaFechaHoraFin = nuevaFecha.plusMinutes(duracionTotalCita);
+
+        // Verificar si el horario está disponible
+        if (!isHorarioDisponible(nuevaFecha, nuevaFechaHoraFin)) {
+            throw new HorarioNoDisponibleException("El horario no está disponible.");
+        }
+
+        // Cambiar la fecha de la cita si el horario es válido
         cita.setFecha(nuevaFecha);
 
+        // Cambiar el estado de la cita a "REPROGRAMADA"
         EstadoCita estadoReprogramada = estadoCitaRepository.findByNombre("REPROGRAMADA")
                 .orElseThrow(() -> new Exception("Estado de cita 'REPROGRAMADA' no encontrado"));
 
         cita.setEstadoCita(estadoReprogramada);
+
+        // Guardar y devolver la cita reprogramada
         return citaRepository.save(cita);
     }
 

@@ -6,7 +6,9 @@ import jakarta.validation.constraints.NotNull;
 public record DetalleServicioCitaDTO(
 
         @NotBlank @NotNull
-        Long idServicio,
+        Long id,
+        @NotBlank @NotNull
+        String nombre,
         @NotBlank @NotNull
         double precio
 

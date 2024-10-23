@@ -76,20 +76,20 @@ connection.connect((err) => {
         console.log('Inserciones en Servicio completadas:', result.affectedRows);
     });
 
-    // Inserciones en la tabla Estilista
-    const estilistas = [
-        ['Estilista 1'],
-        ['Estilista 2'],
-        ['Estilista 3'],
-        ['Estilista 4'],
-        ['Estilista 5']
-    ];
-
-    const sqlEstilista = 'INSERT INTO Estilista (nombre) VALUES ?';
-    connection.query(sqlEstilista, [estilistas], (err, result) => {
-        if (err) throw err;
-        console.log('Inserciones en Estilista completadas:', result.affectedRows);
-    });
+        // Inserciones en la tabla Estilista
+        const estilistas = [
+            ['Correo1','Estilista 1'],
+            ['Correo2','Estilista 2'],
+            ['Correo3','Estilista 3'],
+            ['Correo4','Estilista 4'],
+            ['Correo5','Estilista 5']
+        ];
+    
+        const sqlEstilista = 'INSERT INTO Estilista (correo, nombre) VALUES ?';
+        connection.query(sqlEstilista, [estilistas], (err, result) => {
+            if (err) throw err;
+            console.log('Inserciones en Estilista completadas:', result.affectedRows);
+        });
 
     // Inserciones en la tabla Cita
     const citas = [
