@@ -7,7 +7,7 @@ public record InformacionDetallesProductosCitaClienteDTO(
 
         String nombre,
 
-        int cantidad,
+        int stock,
 
         double precio
 

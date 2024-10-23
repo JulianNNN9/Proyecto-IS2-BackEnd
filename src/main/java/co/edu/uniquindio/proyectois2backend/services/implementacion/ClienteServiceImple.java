@@ -5,6 +5,7 @@ import co.edu.uniquindio.proyectois2backend.repositories.ClienteRepository;
 import co.edu.uniquindio.proyectois2backend.services.interfaces.ClienteService;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,4 +43,28 @@ public class ClienteServiceImple implements ClienteService {
         }
 
     }
+
+    @Override
+    public Optional<Cliente> buscarDatosCliente (Cliente cliente) throws Exception{
+
+        try {
+            
+            Long clienteId = clienteRepository.obtenerIdCliente(cliente.getCorreo());
+ 
+            Optional<Cliente> clienteEncontrado = clienteRepository.findById(clienteId);
+
+            System.out.println(cliente);
+
+            return clienteEncontrado;
+        } catch (Exception e) {
+
+            throw new Exception("no se encontro ningun usuario");
+        }
+        
+
+        
+
+    }
+
+
 }

@@ -28,9 +28,10 @@ public class ProductoServiceImple implements ProductoService {
                 .map(producto -> new InformacionProductoDTO(
                         producto.getId(),
                         producto.getNombre(),
+                        producto.getStock(),
                         producto.getPrecio(),
-                        producto.getMarca(),
-                        producto.getStock()
+                        producto.getMarca()
+                        
                 ))
                 .collect(Collectors.toList());
     }

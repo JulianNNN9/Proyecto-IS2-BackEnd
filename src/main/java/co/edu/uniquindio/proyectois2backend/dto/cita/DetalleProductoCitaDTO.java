@@ -7,11 +7,16 @@ public record DetalleProductoCitaDTO(
 
 
         @NotBlank @NotNull
-        Long idProducto,
+        Long id,
         @NotBlank @NotNull
-        int cantidad,
+        String nombre,
         @NotBlank @NotNull
-        double precio
+        double precio,
+        @NotBlank @NotNull
+        String marca,
+        @NotBlank @NotNull
+        int stock
+        
 
 ){}
 

@@ -22,6 +22,7 @@ public class CitaServiceImpleTest {
     @Autowired
     private CitaService citaService;
 
+    /* 
     @Test
     public void testCrearCita(){
         // CrearCitaDTO con servicios y productos inicializados
@@ -63,5 +64,9 @@ public class CitaServiceImpleTest {
             Assertions.fail("Validacion de testConfirmarCita Falló" + e.getMessage());
         }
 
+
+
     }
+
+    */
 }

@@ -240,7 +240,7 @@ public class CitaServiceImple implements CitaService {
     private List<DetalleServicioCita> convertirDetallesServicioCita(Cita cita, List<DetalleServicioCitaDTO> dtos) throws Exception {
         List<DetalleServicioCita> detalleServicioCitasList = new ArrayList<>();
         for (DetalleServicioCitaDTO dto : dtos) {
-            Optional<Servicio> servicioEncontrado = servicioRepository.findById(dto.idServicio());
+            Optional<Servicio> servicioEncontrado = servicioRepository.findById(dto.id());
             if(servicioEncontrado.isEmpty()){
                 throw new Exception("Servicio no encontrado");
             }
@@ -260,7 +260,7 @@ public class CitaServiceImple implements CitaService {
     private List<DetalleProductoCita> convertirDetallesProductoCita(Cita cita, List<DetalleProductoCitaDTO> dtos) throws Exception {
         List<DetalleProductoCita> detalleProductoCitaList = new ArrayList<>();
         for (DetalleProductoCitaDTO dto : dtos) {
-            Optional<Producto> productoEncontrado = productoRepository.findById(dto.idProducto());
+            Optional<Producto> productoEncontrado = productoRepository.findById(dto.id());
             if(productoEncontrado.isEmpty()){
                 throw new Exception("Producto no encontrado");
             }
@@ -269,7 +269,7 @@ public class CitaServiceImple implements CitaService {
             DetalleProductoCita detalleProductoCita = new DetalleProductoCita();
             detalleProductoCita.setCita(cita);
             detalleProductoCita.setProducto(producto);
-            detalleProductoCita.setCantidad(dto.cantidad());
+            detalleProductoCita.setCantidad(dto.stock());
             detalleProductoCita.setPrecio(dto.precio());
 
             detalleProductoCitaList.add(detalleProductoCita);
