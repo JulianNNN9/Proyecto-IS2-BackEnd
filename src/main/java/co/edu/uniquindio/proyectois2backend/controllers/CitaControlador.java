@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/cita")
 @RequiredArgsConstructor
@@ -24,11 +24,18 @@ public class CitaControlador {
 
     private final CitaService citaService;
 
-    @PostMapping("/crear-cita")
-    public ResponseEntity<MensajeDTO<String>> crearCita(@Valid @RequestBody CrearCitaDTO crearCitaDTO) throws Exception {
+    @PostMapping("/crear-cita2")
+    public ResponseEntity<MensajeDTO<String>> crearCita2(@Valid @RequestBody CrearCitaDTO crearCitaDTO) throws Exception {
         citaService.crearCita(crearCitaDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Cita creada correctamente"));
     }
+
+    @PostMapping("/crear-cita")
+    public Long crearCita(@Valid @RequestBody CrearCitaDTO crearCitaDTO) throws Exception {
+        Long CitaId = citaService.crearCita(crearCitaDTO);
+        return CitaId;
+    }
+
 
     @PostMapping("/confirmar-cita/{id}")
     public ResponseEntity<MensajeDTO<String>> confirmarCita(@PathVariable("id") Long citaId) throws Exception {
