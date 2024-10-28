@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/cita")
 @RequiredArgsConstructor
@@ -75,6 +75,7 @@ public class CitaControlador {
             Cita citaModificada = citaService.modificarCitaPendiente(citaId, modificarCitaDTO);
             return ResponseEntity.ok(new MensajeDTO<>(false, "Cita modificada exitosamente"));
         } catch (Exception e) {
+            System.out.println("exception: "+ e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MensajeDTO<>(true, e.getMessage()));
         }
     }
