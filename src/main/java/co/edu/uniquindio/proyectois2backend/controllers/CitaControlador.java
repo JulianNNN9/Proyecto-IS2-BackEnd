@@ -49,7 +49,7 @@ public class CitaControlador {
     }
     // Endpoint para cancelar una cita
     @PutMapping("/{citaId}/cancelar-cita")
-    public ResponseEntity<MensajeDTO<String>> cancelarCita(@PathVariable Long citaId) {
+    public ResponseEntity<MensajeDTO<String>> cancelarCita(@PathVariable("citaId") Long citaId) {
         try {
             Cita citaCancelada = citaService.cancelarCita(citaId);
             return ResponseEntity.ok(new MensajeDTO<>(false, "La cita ha sido cancelada exitosamente"));
@@ -68,7 +68,7 @@ public class CitaControlador {
         }
     }
     @PutMapping("/{citaId}/modificar-cita-pendiente")
-    public ResponseEntity<MensajeDTO<String>> modificarCita(@PathVariable Long citaId, @RequestBody ModificarCitaDTO modificarCitaDTO) {
+    public ResponseEntity<MensajeDTO<String>> modificarCita(@PathVariable("citaId") Long citaId, @RequestBody ModificarCitaDTO modificarCitaDTO) {
         System.out.println(citaId);
         System.out.println(modificarCitaDTO);
         try {
