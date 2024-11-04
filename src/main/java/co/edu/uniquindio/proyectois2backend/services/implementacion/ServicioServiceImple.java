@@ -21,14 +21,17 @@ public class ServicioServiceImple implements ServicioService {
     @Override
     public List<InformacionServicioDTO> obtenerTodosLosServicios() {
         List<Servicio> servicios = servicioRepository.findAll();
-
-        // Convertir los servicios a DTO
         return servicios.stream()
-                .map(servicio -> new InformacionServicioDTO(
-                        servicio.getId(),
-                        servicio.getNombre(),
-                        servicio.getPrecio()
-                ))
+                .map(this::convertirAServicioDTO)
                 .collect(Collectors.toList());
+    }
+
+    // Método privado para convertir un Servicio en un InformacionServicioDTO
+    private InformacionServicioDTO convertirAServicioDTO(Servicio servicio) {
+        return new InformacionServicioDTO(
+                servicio.getId(),
+                servicio.getNombre(),
+                servicio.getPrecio()
+        );
     }
 }

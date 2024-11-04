@@ -22,14 +22,17 @@ public class EstilistaServiceImple implements EstilistaService {
     @Override
     public List<InformacionEstilistaDTO> obtenerTodosLosEstilistas() {
         List<Estilista> estilistas = estilistaRepository.findAll();
-
-        // Convertir los servicios a DTO
         return estilistas.stream()
-                .map(estilista -> new InformacionEstilistaDTO(
-                        estilista.getId(),
-                        estilista.getNombre(),
-                        estilista.getCorreo()
-                ))
+                .map(this::convertirAEstilistaDTO)
                 .collect(Collectors.toList());
+    }
+
+    // Método privado para convertir un Estilista en un InformacionEstilistaDTO
+    private InformacionEstilistaDTO convertirAEstilistaDTO(Estilista estilista) {
+        return new InformacionEstilistaDTO(
+                estilista.getId(),
+                estilista.getNombre(),
+                estilista.getCorreo()
+        );
     }
 }

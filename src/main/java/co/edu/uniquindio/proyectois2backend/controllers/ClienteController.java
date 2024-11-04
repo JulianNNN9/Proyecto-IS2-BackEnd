@@ -46,7 +46,7 @@ public class ClienteController {
 
 
     @PostMapping("/DatosCliente") // Trae los datos completos de algun cliente en especifico @Param Correo
-    public Optional<Cliente> datosCliente (@RequestBody Cliente cliente) throws Exception {
+    public Optional<Cliente> buscarDatosCliente (@RequestBody Cliente cliente) throws Exception {
 
         try {
 
