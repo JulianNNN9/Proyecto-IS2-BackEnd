@@ -30,14 +30,15 @@ public class ClienteServiceImple implements ClienteService {
     public Cliente crearCliente(Cliente cliente) throws Exception {
         //Aquí podrías agregar lógica adicional, como validaciones
 
-        if (!clienteRepository.ExisteClienteCorreo(cliente.getCorreo())){
-
+        if (!existeClienteCorreo(cliente.getCorreo())){
             return clienteRepository.save(cliente); // Guarda el cliente en la base de datos
         }else{
-
             throw new Exception("correo duplicado");
         }
         
+    }
+    private boolean existeClienteCorreo(String correo) {
+        return clienteRepository.ExisteClienteCorreo(correo);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class ClienteServiceImple implements ClienteService {
 
         try {
             
-            Long clienteId = clienteRepository.obtenerIdCliente(cliente.getCorreo());
+            Long clienteId = clienteRepository.obtenerIdClientePorCorreo(cliente.getCorreo());
  
             Optional<Cliente> clienteEncontrado = clienteRepository.findById(clienteId);
 

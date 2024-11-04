@@ -22,17 +22,19 @@ public class ProductoServiceImple implements ProductoService {
     @Override
     public List<InformacionProductoDTO> obtenerTodosLosProductos() {
         List<Producto> productos = productoRepository.findAll();
-
-        // Convertir los servicios a DTO
         return productos.stream()
-                .map(producto -> new InformacionProductoDTO(
-                        producto.getId(),
-                        producto.getNombre(),
-                        producto.getStock(),
-                        producto.getPrecio(),
-                        producto.getMarca()
-                        
-                ))
+                .map(this::convertirAProductoDTO)
                 .collect(Collectors.toList());
+    }
+
+    // Método privado para convertir un Producto en un InformacionProductoDTO
+    private InformacionProductoDTO convertirAProductoDTO(Producto producto) {
+        return new InformacionProductoDTO(
+                producto.getId(),
+                producto.getNombre(),
+                producto.getStock(),
+                producto.getPrecio(),
+                producto.getMarca()
+        );
     }
 }
