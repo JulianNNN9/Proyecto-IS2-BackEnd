@@ -3,9 +3,11 @@ package co.edu.uniquindio.proyectois2backend.repositories;
 import co.edu.uniquindio.proyectois2backend.model.Resenia;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ReseniaRepository extends JpaRepository<Resenia, Long> {
 
     @Query("SELECT r.calificacion, r.cliente.nombre FROM Resenia r WHERE r.calificacion = :calificacion AND r.cliente.nombre = :nombreCliente AND r.comentario = :comentario")

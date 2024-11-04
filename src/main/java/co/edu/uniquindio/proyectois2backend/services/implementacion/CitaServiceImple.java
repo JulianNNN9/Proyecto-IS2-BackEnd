@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -90,8 +91,10 @@ public class CitaServiceImple implements CitaService {
         citaNueva.setPropina(0.0);
         Cita citaGuardata = citaRepository.save(citaNueva);
 
+
         detalleServicioCitaRepository.saveAll(detalleServicioCitasList);
         detalleProductoCitaRepository.saveAll(detalleProductoCitaList);
+
         return citaGuardata.getId();
     }
     @Override
@@ -325,6 +328,13 @@ public class CitaServiceImple implements CitaService {
         if (!citaExistente.getEstadoCita().getNombre().equals("PENDIENTE")) {
             throw new Exception("Solo se pueden modificar citas pendientes");
         }
+        Estilista estilista = null;
+        if(Objects.equals(citaExistente.getEstilista().getId(), modificarCitaDTO.estilistaId())){
+            estilista = citaExistente.getEstilista();
+        }
+        estilista = estilistaRepository.findById(modificarCitaDTO.estilistaId())
+                .orElseThrow(() -> new Exception("Estilista no encontrado"));
+
         // Actualizar la fecha si es necesario
         if (modificarCitaDTO.fecha() != null) {
             if(!citaExistente.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")).equals(modificarCitaDTO.fecha())){
@@ -365,7 +375,7 @@ public class CitaServiceImple implements CitaService {
         // Recalcular el total a pagar en base a los nuevos servicios/productos
         double totalAPagar = calcularTotalAPagarServiciosYProductos(citaExistente.getDetalleServicioCitas(), citaExistente.getDetalleProductoCitas());
         citaExistente.setTotalPago(totalAPagar);
-
+        citaExistente.setEstilista(estilista);
         // Guardar la cita modificada y devolverla
         return citaRepository.save(citaExistente);
     }
