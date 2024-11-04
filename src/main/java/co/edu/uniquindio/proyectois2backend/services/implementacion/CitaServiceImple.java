@@ -129,38 +129,52 @@ public class CitaServiceImple implements CitaService {
         List<InformacionCitasClienteDTO> historialCitas = new ArrayList<>();
 
         for (Cita cita : citas) {
-            List<InformacionDetallesServiciosCitaClienteDTO> serviciosDTO = cita.getDetalleServicioCitas().stream()
-                    .map(detalleServicio -> new InformacionDetallesServiciosCitaClienteDTO(
-                            detalleServicio.getServicio().getId(),
-                            detalleServicio.getServicio().getNombre(),
-                            detalleServicio.getPrecio()
-                    ))
-                    .collect(Collectors.toList());
-
-            List<InformacionDetallesProductosCitaClienteDTO> productosDTO = cita.getDetalleProductoCitas().stream()
-                    .map(detalleProducto -> new InformacionDetallesProductosCitaClienteDTO(
-                            detalleProducto.getProducto().getId(),
-                            detalleProducto.getProducto().getNombre(),
-                            detalleProducto.getCantidad(),
-                            detalleProducto.getPrecio()
-                    ))
-                    .collect(Collectors.toList());
-
-            // Crear el DTO de la cita con toda la información
-            InformacionCitasClienteDTO citaDTO = new InformacionCitasClienteDTO(
-                    cita.getId(),
-                    cita.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
-                    serviciosDTO,
-                    productosDTO,
-                    cita.getComentario(),
-                    cita.getCliente().getNombre(),
-                    cita.getEstilista().getNombre()
-            );
+            List<InformacionDetallesServiciosCitaClienteDTO> serviciosDTO = crearServiciosDTO(cita);
+            List<InformacionDetallesProductosCitaClienteDTO> productosDTO = crearProductosDTO(cita);
+            InformacionCitasClienteDTO citaDTO = crearCitaDTO(cita, serviciosDTO, productosDTO);
 
             historialCitas.add(citaDTO);
         }
 
         return historialCitas;
+    }
+
+    // Método privado para crear la lista de servicios DTO
+    private List<InformacionDetallesServiciosCitaClienteDTO> crearServiciosDTO(Cita cita) {
+        return cita.getDetalleServicioCitas().stream()
+                .map(detalleServicio -> new InformacionDetallesServiciosCitaClienteDTO(
+                        detalleServicio.getServicio().getId(),
+                        detalleServicio.getServicio().getNombre(),
+                        detalleServicio.getPrecio()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    // Método privado para crear la lista de productos DTO
+    private List<InformacionDetallesProductosCitaClienteDTO> crearProductosDTO(Cita cita) {
+        return cita.getDetalleProductoCitas().stream()
+                .map(detalleProducto -> new InformacionDetallesProductosCitaClienteDTO(
+                        detalleProducto.getProducto().getId(),
+                        detalleProducto.getProducto().getNombre(),
+                        detalleProducto.getCantidad(),
+                        detalleProducto.getPrecio()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    // Método privado para crear el DTO de la cita
+    private InformacionCitasClienteDTO crearCitaDTO(Cita cita,
+                                                    List<InformacionDetallesServiciosCitaClienteDTO> serviciosDTO,
+                                                    List<InformacionDetallesProductosCitaClienteDTO> productosDTO) {
+        return new InformacionCitasClienteDTO(
+                cita.getId(),
+                cita.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
+                serviciosDTO,
+                productosDTO,
+                cita.getComentario(),
+                cita.getCliente().getNombre(),
+                cita.getEstilista().getNombre()
+        );
     }
 
     private ConfirmacionDTO crearConfirmacionDTO(Cita cita) {
